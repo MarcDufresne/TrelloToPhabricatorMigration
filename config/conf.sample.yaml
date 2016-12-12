@@ -1,0 +1,17 @@
+---
+# If you want to do a dry run only. Will display tasks that would have
+# been created. Will also show actual object names instead of PHIDs
+card_import_dry_run: true
+
+# Label that will ba applied to all tasks created by this tool
+# Useful for testing and keeping track of which tasks are migrated
+# No label will be applied if this is empty or null
+migrated_project_phid: "PHID-PROJ-xxxxxxxxxxxxxxxxxxxx"
+
+file_map:
+  board.json: "BOARD_ID"
+  # ...
+
+project_phab_ids:
+  BOARD_ID: "PHID-PROJ-xxxxxxxxxxxxxxxxxxxx"
+  # ...

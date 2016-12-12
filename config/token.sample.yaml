@@ -1,0 +1,14 @@
+---
+# Conduit "api" token from a bot admin user, this user
+# will "create" all the tasks
+phab_api_token: "TOKEN"
+
+# Name of your Trello organization (get from the URL of your org page)
+trello_org_name_or_id: "ORG_NAME_OR_ID"
+
+# Get your dev key from here: https://trello.com/app-key
+trello_key: "KEY"
+
+# Get your user token from here, in a browser:
+# https://trello.com/1/authorize?key=TRELLO_KEY&name=Import+Tool&expiration=30days&response_type=token&scope=read
+trello_token: "TOKEN"

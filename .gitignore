@@ -1,0 +1,6 @@
+.idea
+config/token.yaml
+config/conf.yaml
+config/user_map.yaml
+config/project_map.yaml
+trello_exports/*.json

@@ -1,0 +1,13 @@
+---
+# Maps Trello member ids to a Phabricator PHID,
+# use `import_members.py` to populate this
+user_map:
+  # NAME
+  MEMBER_ID: "PHID-USER-xxxxxxxxxxxxxxxxxxxx"
+  # ...
+
+# Maps Trello member ids to Phabricator usernames,
+# use `phids_usernames.py` for that
+memberid_to_username:
+  MEMBER_ID: "user.name"
+  # ...

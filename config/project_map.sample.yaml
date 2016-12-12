@@ -1,0 +1,5 @@
+---
+# Maps Trello labels to Phabricator "Projects"
+project_map:
+  # Label Name
+  LABEL_ID: "PHID-PROJ-xxxxxxxxxxxxxxxxxxxx"
