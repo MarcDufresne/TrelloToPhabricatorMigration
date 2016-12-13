@@ -4,3 +4,5 @@ config/conf.yaml
 config/user_map.yaml
 config/project_map.yaml
 trello_exports/*.json
+.DS_Store
+._*

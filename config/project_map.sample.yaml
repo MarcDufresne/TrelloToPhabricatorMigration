@@ -1,5 +1,6 @@
 ---
-# Maps Trello labels to Phabricator "Projects"
+# Maps Trello labels to Phabricator "Projects".
+# Use `import_labels.py` to populate this value.
 project_map:
   # Label Name
   LABEL_ID: "PHID-PROJ-xxxxxxxxxxxxxxxxxxxx"

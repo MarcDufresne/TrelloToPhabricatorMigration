@@ -92,7 +92,7 @@ def labels_to_projects(labels, project):
     project_list = []
 
     for label in labels:
-        if label in TAGS_TO_PROJECTS:
+        if label in TAGS_TO_PROJECTS and TAGS_TO_PROJECTS[label]:
             project_list.append(TAGS_TO_PROJECTS[label])
 
     if project in BOARD_PROJECTS:

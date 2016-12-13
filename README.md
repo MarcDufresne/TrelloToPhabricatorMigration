@@ -7,13 +7,27 @@ any additional details.
 
 - Card name -> Task title
 - Card description, checklists, earlier comments -> Task description
-- Card labels -> Project Tags
+- Card labels, board -> Project Tags
 - Card members -> Task subscribers
 
 Note that this does not create users or projects in your Phabricator 
 instance. Those will need to be created beforehand.
 
-### Getting Started
+### Getting PHIDs from Phabricator
+
+During the configuration you will need to provide PHIDs of Phabricator
+Projects and Users, To get those go to `/conduit/method/phid.lookup/` of
+your Phabricator install.
+
+In the `names` field you can provide a list of
+object names. Use `#` prefix for and projects and `@` for users.
+Like so:
+
+```
+["@user1", "@user2", "#project1"]
+```
+
+## Getting Started
 
 To get started follow the steps below:
 
@@ -22,87 +36,98 @@ To get started follow the steps below:
   all the dependencies.
   
 Then you will need to copy all the `yaml` files in the config directory
-and remove the `.sample` from the name of each one. Then you will need to 
-populate those files. A reference of each config value is provided below. 
+and remove the `.sample` from the name of each one. Then you will need to
+populate those files. A reference of each config value is provided below.
 
-##### conf.yaml
+#### conf.yaml
 
-`card_import_dry_run`: `true` or `false`, whether the tool will create 
+`card_import_dry_run`: `true` or `false`, whether the tool will create
 the tasks for real or not. `true` will not create tasks.
 
-`migrated_project_phid`: optional PHID, will be applied to all created 
-tasks so they are easy to keep track of. You will need to create this 
+`migrated_project_phid`: optional PHID, will be applied to all created
+tasks so they are easy to keep track of. You will need to create this
 one in Phabricator.
 
-`file_map`: a simple mapping of file name to board ID, determines which 
+`file_map`: a simple mapping of file name to board ID, determines which
 file will be used for migration. Files not in this list won't be imported.
 
 `project_phab_ids`: mapping of board IDs to project PHIDs to assign labels based
 on the original board. You will need to create those in Phabricator then
 add the PHIDs here.
 
-##### project_map.yaml
+#### project_map.yaml
 
-`project_map`: Mapping of label IDs to project PHIDs. Get the label IDs 
-from each board's JSON file. You will need to 
-create corresponding projects ("tags") in Phabricator and add the 
-PHIDs here.
+`project_map`: Mapping of label IDs to project PHIDs. Use `import_labels.py`
+to generate the initial values.
 
-##### user_map.yaml
+#### user_map.yaml
 
 `user_map`: Mapping of member IDs to user PHIDs, use `import_members.py`
-to populate the list of members. You will need to get the corresponding 
-user PHIDs from Phabricator and add them next to the member IDs. You can
-also leave some empty PHIDs, those members won't be subscribed to tasks.
+to populate the list of members.
 
-`memberid_to_username`: Mapping between member IDs and Phabricator user 
-names. Use `phids_usernames.py` to populate this config. It will use 
+`memberid_to_username`: Mapping between member IDs and Phabricator user
+names. Use `phids_usernames.py` to populate this config. It will use
 `user_map` as a base.
 
-##### token.yaml
+#### token.yaml
 
-`phab_api_token`: Conduit API token from an admin user. It is recommended 
+`phab_api_token`: Conduit API token from an admin user. It is recommended
 to use a bot since it will be subscribed to all created tasks.
 
-`trello_org_name_or_id`: Name of your Organization on Trello, you can 
+`trello_org_name_or_id`: Name of your Organization on Trello, you can
 get this one in the URL of your Org page on Trello.
 
 `trello_key`: Your Trello API key, get it [here](https://trello.com/app-key).
 
-`trello_token` Trello user token for private boards/orgs, get it 
+`trello_token` Trello user token for private boards/orgs, get it
 with this URL in a browser. Replace `TRELLO_KEY` with your own key.
 
 ```
 https://trello.com/1/authorize?key=TRELLO_KEY&name=Import+Tool&expiration=30days&response_type=token&scope=read
 ```
 
-### Importing Members
+## Importing Members
 
-##### import_members.py
+#### import_members.py
 
-This will print all your Trello members in your console. Copy and 
+This will print all your Trello members in your console. Copy and
 paste the value in `user_map.yaml`/`user_map`. You can reuse this script
 to update the members later on, it will only show members that are not
 in your current config file.
 
-##### phids_usernames.py
+You will need to get the corresponding user PHIDs from Phabricator and
+add them next to the member IDs. You can also leave some empty PHIDs,
+those members won't be subscribed to tasks.
 
-This will use the `user_map.yaml`/`user_map` values to fetch the 
+#### phids_usernames.py
+
+This will use the `user_map.yaml`/`user_map` values to fetch the
 Phabricator usernames for every member. Copy and paste the result in
 `user_map.yaml`/`memberid_to_username`.
 
-### Importing Boards JSON
+## Importing Boards JSON
 
-To get all boards, cards and comments for your Organization run 
+To get all boards, cards and comments for your Organization run
 `import_boards.py`. This will fetch all the boards and save them as JSON
-in the `trello_exports` directory. You can then edit the 
-`conf.yaml`/`file_map` to determine which boards will be imported. 
-As well as getting the labels from each boards to populate 
-`project_map.yaml`/`project_map`
+in the `trello_exports` directory.
 
-### Import Cards
+You can then edit the `conf.yaml`/`file_map` to determine which boards
+will be imported.
+
+## Importing Labels
+
+Use `import_labels.py` to generate the `project_map.yaml`/`project_map`
+values, copy and paste them in. Values from `conf.yaml`/`file_map` will
+be used to determine which boards to get labels from. This script can be
+re-run to add new labels later on. It will only display the new ones.
+
+You will need to create corresponding projects (tags) in Phabricator and
+get the PHIDs of each one. You can leave value blank and they will not
+be assigned to imported tasks.
+
+## Import Cards
  
-Run `main.py` to import all the boards from `conf.yaml`/`file_map` into 
+Run `main.py` to import all the boards from `conf.yaml`/`file_map` into
 Phabricator. `conf.yaml`/`card_import_dry_run` will determine if tasks will
 be created or just shown without being created on Phabricator.
 
