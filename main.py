@@ -108,14 +108,15 @@ def generate_formatted_checklists(checklists):
     formatted_checklists = ""
 
     for checklist in checklists:
-        formatted_checklists += "=== {} ===\n\n".format(checklist.get('name'))
+        formatted_checklists += "=== {} ===\n\n".format(
+            checklist.get('name').encode('utf8'))
         for checked_item in checklist.get('checkItems', []):
             if checked_item.get('state', "") == 'complete':
                 box = "[X]"
             else:
                 box = "[ ]"
             formatted_checklists += "{} - {}\n".format(
-                box, checked_item.get('name'))
+                box, checked_item.get('name').encode('utf8'))
         formatted_checklists += "\n\n"
 
     return formatted_checklists
@@ -135,7 +136,7 @@ def generate_comments(comments):
         comments_block += "\n@{} - {}\n{}\n".format(
             MEMBER_TO_USERNAME.get(comment['author_id'],
                                    comment['author_id']),
-            comment['date'], comment['text'])
+            comment['date'], comment['text'].encode('utf8'))
 
     return comments_block
 
@@ -168,7 +169,7 @@ def import_cards_to_phab(cards, board_id, checklists, created_tasks,
         if card.get('closed', True):
             continue
 
-        desc = card.get('desc')
+        desc = card.get('desc').encode('utf8')
 
         cards_checklists = []
         for checklist in checklists:
@@ -183,7 +184,8 @@ def import_cards_to_phab(cards, board_id, checklists, created_tasks,
         if card.get('comments'):
             comments = generate_comments(card['comments'])
 
-        desc += formatted_checklists + card_url + comments
+        desc = "{}{}{}{}".format(desc, formatted_checklists,
+                                 card_url, comments)
 
         cc_phids = member_list_to_phab_users_phids(card.get('idMembers', []))
         projects = labels_to_projects(card.get('idLabels', []), board_id)
