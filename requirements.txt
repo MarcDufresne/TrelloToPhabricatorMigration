@@ -1,6 +1,6 @@
 simplejson==3.11.1
 trello==0.9.1
-flake8==3.3.0
+flake8==3.4.0
 pep8==1.7.0
 phabricator==0.7.0
 PyYAML==3.12
