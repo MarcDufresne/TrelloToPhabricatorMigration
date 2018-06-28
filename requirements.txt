@@ -1,4 +1,4 @@
-simplejson==3.15.0
+simplejson==3.16.0
 trello==0.9.1
 pep8==1.7.1
 flake8==3.5.0
