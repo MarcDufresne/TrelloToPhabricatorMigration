@@ -3,4 +3,4 @@ trello==0.9.1
 pep8==1.7.1
 flake8==3.6.0
 phabricator==0.7.0
-PyYAML==4.1
+PyYAML==5.1
